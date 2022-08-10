@@ -9,6 +9,10 @@ This is Negative Prediction from the model
 
 ![image](https://user-images.githubusercontent.com/57446794/183933999-e8eef7d9-6296-47e3-b914-ea0a182dcdeb.png)
 
+This is Neutral Prediction from the model
+
+![image](https://user-images.githubusercontent.com/57446794/183937438-fdc7a999-59db-4403-b936-708dbd0d2988.png)
+
 
 #NLP and how it’s work
 NLP Stand for Natural Language Processing. NLP is a branch of artificial intelligence. It concerned with the interaction between computer and human language. It helps machines to understand the human language so that they can automatically perform repetitive tasks. 
