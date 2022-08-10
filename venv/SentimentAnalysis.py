@@ -36,5 +36,5 @@ def sentimentRequest():
 
 if __name__ == "__main__":
     # Replace the IP Address With your System Ip Address
-    app.run(host="192.168.10.10", port=80)
+    app.run(host="192.168.10.7", port=80)
     # app.run(debug=True)

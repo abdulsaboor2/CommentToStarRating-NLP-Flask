@@ -4,6 +4,7 @@ import { SafeAreaView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity,
 
 const App = () => {
   const [text, setText] = useState("");
+  const [result, setResult] = useState("");
   const [visible, setVisible] = useState(false);
 
   // To set the default Star Selected
@@ -18,25 +19,43 @@ const App = () => {
   const starImageCorner =
     'https://raw.githubusercontent.com/AboutReact/sampleresource/master/star_corner.png';
 
+    const handleEmoji = (responseJson) => {
+      if(responseJson == 1){
+        setResult("Negative ☹️")
+      }
+      else if(responseJson == 2){
+        setResult("Negative But Not Least 🙁")
+      }
+      else if(responseJson == 3){
+        setResult("Neutral 🙂")
+      }
+      else if(responseJson == 4){
+        setResult("Positive But not 5 😀")
+      }
+      else if(responseJson == 5){
+        setResult("Positive 😍")
+      }
+    }
+
     const handleSubmit = () => {
       if(text == ""){
         alert("Please Write Some Text on Text Box");
       }
       else{
-        getModelPrediction()
+        getModelPrediction();
         setVisible(true);
       }
     }
 
     const getModelPrediction = async () => {
-     
         try {
-          await fetch("http://192.168.10.10?q=" + text, { method: "GET" }).then((response) => response.json())
+          await fetch("http://192.168.10.7?q=" + text, { method: "GET" }).then((response) => response.json())
             .then((responseJson) => {
               setRating(responseJson);
+              handleEmoji(responseJson);
             })
             .catch((error) => {
-              console.error(error);
+              alert(error);
             });
   
         } catch (err) {
@@ -68,34 +87,84 @@ const App = () => {
   return (
     <SafeAreaView>
       <StatusBar backgroundColor="#61dafb" />
-      <View>
-        <View style={{marginTop:20, marginBottom:20, marginLeft:5, marginRight:5}}>
-          <Text style={{margin:10, fontSize:18, color:"black", fontWeight:"bold", }}>Write Comment Below</Text>
-          <TextInput style={{borderWidth:3, borderColor:"gray", fontSize:20, padding:10, minHeight:100, color: "black"}} multiline keyboardType='text' placeholder='Write Some Text' onChangeText={(e)=>setText(e)} />
+      <Text style={styles.header}>Sentiment Analysis using NLP</Text>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.boxHeader}>Write Comment Below</Text>
+          <TextInput 
+            style={styles.inputBox} 
+            multiline keyboardType='text' 
+            placeholder='Write Some Text' 
+            onChangeText={(e)=>setText(e)} />
         </View>
-        <View style={{padding:10}}>
-          <TouchableOpacity style={{backgroundColor:"lightgreen", height:45, borderRadius: 10, alignContent:"center", alignItems:"center", paddingTop:8}} onPress={handleSubmit}>
-            <Text style={{textAlign:"center", fontSize:21, fontWeight:"bold", color:"white"}}>Submit</Text>
+
+        <View>
+          <TouchableOpacity style={styles.buttonContainer} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>
 
-        { visible ? <CustomRatingBar /> : <></> }
+        { visible ? 
+          <>
+            <Text style={{fontSize:26, textAlign:'center', color:"black"}}> {result} </Text>
+            <CustomRatingBar />
+          </>
+          : <></> }
         
-
       </View>   
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  header:{
+    fontSize:25, 
+    fontWeight:"bold", 
+    textAlign:"center", 
+    backgroundColor:"#61daff", 
+    padding: 10, 
+    borderTopColor:"lightgray", 
+    borderTopWidth:1, 
+    color:"black",
+  },
   container: {
-    flex: 1,
+    margin:20, 
+    marginLeft:5, 
+    marginRight:5,
     backgroundColor: 'white',
     padding: 10,
     justifyContent: 'center',
     textAlign: 'center',
   },
-  
+  boxHeader: {
+    fontSize:18, 
+    color:"black", 
+    fontWeight:"bold",
+  },
+  inputBox: {
+    borderWidth:3, 
+    borderColor:"gray", 
+    fontSize:20, 
+    minHeight:100, 
+    color: "black",
+    paddingLeft:10,
+    paddingRight: 10,
+    borderRadius: 10,
+    marginTop:10,
+  },
+  buttonContainer: {
+    backgroundColor:"lightgreen", 
+    height:45, 
+    borderRadius: 10,
+    paddingTop:8,
+    marginTop:20,
+  },
+  buttonText:{
+    textAlign:"center", 
+    fontSize:21, 
+    fontWeight:"bold", 
+    color:"white",
+  },
   customRatingBarStyle: {
     justifyContent: 'center',
     flexDirection: 'row',
